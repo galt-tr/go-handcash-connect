@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
 )
 
 // RequestResponse is the response from a request
@@ -67,6 +69,15 @@ func httpRequest(ctx context.Context, client *Client,
 	// Set the content type on Method
 	if payload.Method == http.MethodPost || payload.Method == http.MethodPut {
 		request.Header.Set("Content-Type", "application/json")
+	}
+
+	if val := os.Getenv("APP_ID"); val != "" {
+		log.Printf("setting app-id header: %v", val)
+		request.Header.Set("app-id", val)
+	}
+
+	if val := os.Getenv("APP_SECRET"); val != "" {
+		request.Header.Set("app-secret", val)
 	}
 
 	// Set oAuth headers

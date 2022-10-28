@@ -80,9 +80,44 @@ type PaymentResponse struct {
 	Type              PaymentType    `json:"type"`
 }
 
+type PaymentRequestResponse struct {
+	ID                   string            `json:"id"`
+	PaymentRequestUrl    string            `json:"paymentRequestUrl"`
+	PaymentRequestQrCode string            `json:"PaymentRequestQrCode"`
+	Product              map[string]string `json:"product"`
+	IsEnabled            bool              `json:"isEnabled"`
+	Receivers            []*Payment        `json:"receivers"`
+	PaymentAmount        PaymentAmount     `json:"paymentAmount"`
+	RequestedUserData    []string          `json:"RequestedUserData"`
+	Notifications        Notifications     `json:"notifications"`
+	ExpirationType       string            `json:"expirationType"`
+	ExpiresAt            string            `json:"expiresAt"`
+	CreatedAt            string            `json:"createdAt"`
+	RedirectUrl          string            `json:"redirectUrl"`
+}
+
 // PaymentRequest is used for GetPayment()
 type PaymentRequest struct {
 	TransactionID string `json:"transactionId"`
+}
+
+type PaymentRequestV2 struct {
+	Product           map[string]string `json:"product"`
+	Receivers         []*PaymentV2      `json:"receivers"`
+	RequestedUserData []string          `json:"requestedUserData"`
+	Notifications     Notifications     `json:"notifications"`
+	ExpirationType    string            `json:"expirationType"`
+	RedirectUrl       string            `json:"redirectUrl"`
+}
+
+type Notifications struct {
+	Webhook Webhook `json:"webhook"`
+	Email   string  `json:"email"`
+}
+
+type Webhook struct {
+	CustomParameters map[string]string `json:"customParameters"`
+	WebhookUrl       string            `json:"webhookUrl"`
 }
 
 // BalanceRequest is used for GetSpendableBalance()
@@ -122,6 +157,19 @@ type Payment struct {
 	Amount       float64      `json:"amount"`
 	CurrencyCode CurrencyCode `json:"currencyCode"`
 	To           string       `json:"to"`
+}
+
+// PaymentV2 is used by PaymentRequest
+type PaymentV2 struct {
+	Amount       float64      `json:"sendAmount"`
+	CurrencyCode CurrencyCode `json:"currencyCode"`
+	Destination  string       `json:"destination"`
+}
+
+type PaymentAmount struct {
+	CurrencyCode    CurrencyCode `json:"currencyCode"`
+	Amount          float64      `json:"amount"`
+	IsMultiCurrency bool         `json:"isMultiCurrency"`
 }
 
 // PayParameters is used by Pay()

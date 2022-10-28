@@ -49,6 +49,9 @@ const (
 	// endpointProfile is for accessing profile information
 	endpointProfile = "/" + apiVersion + "/connect/profile"
 
+	// endpointPaymentRequests is for accessing handcash payment requests api
+	endpointPaymentRequests = "/v2/paymentRequests"
+
 	// endpointProfileCurrent is for getting the current user profile
 	endpointProfileCurrent = endpointProfile + "/currentUserProfile"
 

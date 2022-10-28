@@ -3,8 +3,10 @@ package handcash
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 /*
@@ -96,6 +98,64 @@ func (c *Client) Pay(ctx context.Context, authToken string,
 	if err = json.Unmarshal(response.BodyContents, &paymentResponse); err != nil {
 		return nil, fmt.Errorf("failed unmarshal: %w", err)
 	} else if paymentResponse == nil || paymentResponse.TransactionID == "" {
+		return nil, fmt.Errorf("failed to make payment")
+	}
+	return paymentResponse, nil
+}
+
+func (c *Client) PaymentRequest(ctx context.Context,
+	paymentRequest *PaymentRequestV2) (*PaymentRequestResponse, error) {
+
+	if val := os.Getenv("APP_ID"); val == "" {
+		return nil, errors.New("missing app_id secret")
+	}
+
+	// Make sure we have payment params
+	if paymentRequest == nil || len(paymentRequest.Receivers) == 0 {
+		return nil, fmt.Errorf("invalid payment parameters")
+	}
+
+	// Get the signed request
+	signed, err := c.getSignedRequest(
+		http.MethodPost,
+		endpointPaymentRequests,
+		"",
+		paymentRequest,
+		currentISOTimestamp(),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("error creating signed request: %w", err)
+	}
+
+	// Convert into bytes
+	var payParamsBytes []byte
+	if payParamsBytes, err = json.Marshal(paymentRequest); err != nil {
+		return nil, err
+	}
+
+	// Make the HTTP request
+	response := httpRequest(
+		ctx,
+		c,
+		&httpPayload{
+			Data:           payParamsBytes,
+			ExpectedStatus: http.StatusOK,
+			Method:         signed.Method,
+			URL:            signed.URI,
+		},
+		signed,
+	)
+
+	// Error in request?
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	// Unmarshal pay response
+	paymentResponse := new(PaymentRequestResponse)
+	if err = json.Unmarshal(response.BodyContents, &paymentResponse); err != nil {
+		return nil, fmt.Errorf("failed unmarshal: %w", err)
+	} else if paymentResponse == nil || paymentResponse.ID == "" {
 		return nil, fmt.Errorf("failed to make payment")
 	}
 	return paymentResponse, nil
