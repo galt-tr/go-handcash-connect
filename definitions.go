@@ -81,19 +81,19 @@ type PaymentResponse struct {
 }
 
 type PaymentRequestResponse struct {
-	ID                   string            `json:"id"`
-	PaymentRequestUrl    string            `json:"paymentRequestUrl"`
-	PaymentRequestQrCode string            `json:"PaymentRequestQrCode"`
-	Product              map[string]string `json:"product"`
-	IsEnabled            bool              `json:"isEnabled"`
-	Receivers            []*Payment        `json:"receivers"`
-	PaymentAmount        PaymentAmount     `json:"paymentAmount"`
-	RequestedUserData    []string          `json:"RequestedUserData"`
-	Notifications        Notifications     `json:"notifications"`
-	ExpirationType       string            `json:"expirationType"`
-	ExpiresAt            string            `json:"expiresAt"`
-	CreatedAt            string            `json:"createdAt"`
-	RedirectUrl          string            `json:"redirectUrl"`
+	ID                      string            `json:"id"`
+	PaymentRequestUrl       string            `json:"paymentRequestUrl"`
+	PaymentRequestQrCodeUrl string            `json:"PaymentRequestQrCodeUrl"`
+	Product                 map[string]string `json:"product"`
+	IsEnabled               bool              `json:"isEnabled"`
+	Receivers               []*Payment        `json:"receivers"`
+	PaymentAmount           PaymentAmount     `json:"paymentAmount"`
+	RequestedUserData       []string          `json:"RequestedUserData"`
+	Notifications           Notifications     `json:"notifications"`
+	ExpirationType          string            `json:"expirationType"`
+	ExpiresAt               string            `json:"expiresAt"`
+	CreatedAt               string            `json:"createdAt"`
+	RedirectUrl             string            `json:"redirectUrl"`
 }
 
 // PaymentRequest is used for GetPayment()
