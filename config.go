@@ -37,6 +37,7 @@ var (
 		EnvironmentProduction: {
 			APIURL:      "https://cloud.handcash.io",
 			ClientURL:   "https://app.handcash.io",
+			TrustURL:    "https;//trust.hastearcade.com",
 			Environment: EnvironmentProduction,
 		},
 	}
@@ -49,8 +50,14 @@ const (
 	// endpointProfile is for accessing profile information
 	endpointProfile = "/" + apiVersion + "/connect/profile"
 
+	endpointAccount = "/" + apiVersion + "/connect/account"
+
+	endpointRequestEmail = endpointAccount + "/requestEmailCode"
+
 	// endpointPaymentRequests is for accessing handcash payment requests api
 	endpointPaymentRequests = "/v2/paymentRequests"
+
+	endpointVerifyCode = "/auth/verifyCode"
 
 	// endpointProfileCurrent is for getting the current user profile
 	endpointProfileCurrent = endpointProfile + "/currentUserProfile"

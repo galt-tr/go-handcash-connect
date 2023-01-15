@@ -80,6 +80,28 @@ type PaymentResponse struct {
 	Type              PaymentType    `json:"type"`
 }
 
+type VerifyCodeResponse struct {
+}
+
+type EmailCodeResponse struct {
+	RequestIDBlob RequestIDBlob `json:"requestId"`
+}
+
+type RequestIDBlob struct {
+	RequestId string `json:"requestId"`
+}
+
+type CreateNewAccountResponse struct {
+	ID                string `json:"id"`
+	Handle            string `json:"handle"`
+	Paymail           string `json:"paymail"`
+	DisplayName       string `json:"displayName"`
+	AvatarUrl         string `json:"avatarUrl"`
+	LocalCurrencyCode string `json:"localCurrencyCode"`
+	BitcoinUnit       string `json:"bitcoinUnit"`
+	CreatedAt         string `json:"createdAt"`
+}
+
 type PaymentRequestResponse struct {
 	ID                      string            `json:"id"`
 	PaymentRequestUrl       string            `json:"paymentRequestUrl"`
@@ -108,6 +130,12 @@ type PaymentRequestV2 struct {
 	Notifications     Notifications     `json:"notifications"`
 	ExpirationType    string            `json:"expirationType"`
 	RedirectUrl       string            `json:"redirectUrl"`
+}
+
+type VerifyCodeRequest struct {
+	RequestId        string `json:"requestId"`
+	VerificationCode string `json:"VerificationCode"`
+	PublicKey        string `json:"publicKey"`
 }
 
 type Notifications struct {
@@ -178,6 +206,16 @@ type PayParameters struct {
 	Attachment  *Attachment `json:"attachment,omitempty"`
 	Description string      `json:"description,omitempty"`
 	Receivers   []*Payment  `json:"receivers,omitempty"`
+}
+
+type EmailRequestParameters struct {
+	Email string `json:"email"`
+}
+
+type CreateNewAccountParameters struct {
+	AccessPublicKey string `json:"AccessPublicKey"`
+	Email           string `json:"email"`
+	ReferrerAlias   string `json:"referrerAlias"`
 }
 
 // PaymentType enum

@@ -62,6 +62,7 @@ func DefaultClientOptions() (clientOptions *ClientOptions) {
 type Environment struct {
 	APIURL      string `json:"api_url"`
 	ClientURL   string `json:"client_url"`
+	TrustURL    string `json:"trust_url"`
 	Environment string `json:"environment"`
 }
 

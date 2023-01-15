@@ -90,3 +90,37 @@ func (c *Client) getSignedRequest(method, endpoint, authToken string,
 		URI:    c.Environment.APIURL + endpoint,
 	}, nil
 }
+
+func (c *Client) getSignedTrustRequest(method, endpoint, authToken string,
+	body interface{}, timestamp string) (*signedRequest, error) {
+
+	// Decode token
+	tokenBytes, err := hex.DecodeString(authToken)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get key pairs
+	privateKey, publicKey := bec.PrivKeyFromBytes(bsvec.S256(), tokenBytes)
+
+	// Get the request signature
+	var requestSignature []byte
+	if requestSignature, err = getRequestSignature(
+		method, endpoint, body, timestamp, privateKey,
+	); err != nil {
+		return nil, err
+	}
+
+	// Return the signed request
+	return &signedRequest{
+		Body: body,
+		Headers: oAuthHeaders{
+			OauthPublicKey: hex.EncodeToString(publicKey.SerialiseCompressed()),
+			OauthSignature: hex.EncodeToString(requestSignature),
+			OauthTimestamp: timestamp,
+		},
+		JSON:   true,
+		Method: method,
+		URI:    c.Environment.TrustURL + endpoint,
+	}, nil
+}
