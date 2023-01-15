@@ -44,14 +44,8 @@ import (
 // Pay makes a new payment request to the HandCash Connect API
 //
 // Specs: https://github.com/HandCash/handcash-connect-sdk-js/blob/master/src/api/http_request_factory.js
-func (c *Client) RequestEmailCode(ctx context.Context, authToken string,
+func (c *Client) RequestEmailCode(ctx context.Context,
 	params *EmailRequestParameters) (*RequestIDBlob, error) {
-
-	// Make sure we have an auth token
-	if len(authToken) == 0 {
-		return nil, fmt.Errorf("missing auth token")
-	}
-
 	// Make sure we have payment params
 	if params == nil || len(params.Email) == 0 {
 		return nil, fmt.Errorf("invalid payment parameters")
@@ -61,7 +55,7 @@ func (c *Client) RequestEmailCode(ctx context.Context, authToken string,
 	signed, err := c.getSignedRequest(
 		http.MethodPost,
 		endpointRequestEmail,
-		authToken,
+		"",
 		params,
 		currentISOTimestamp(),
 	)
@@ -161,12 +155,6 @@ func (c *Client) VerifyCode(ctx context.Context,
 
 func (c *Client) CreateNewAccount(ctx context.Context, authToken string,
 	params *CreateNewAccountParameters) (*CreateNewAccountResponse, error) {
-
-	// Make sure we have an auth token
-	if len(authToken) == 0 {
-		return nil, fmt.Errorf("missing auth token")
-	}
-
 	// Make sure we have payment params
 	if params == nil || len(params.Email) == 0 || len(params.AccessPublicKey) == 0 {
 		return nil, fmt.Errorf("invalid account parameters")
