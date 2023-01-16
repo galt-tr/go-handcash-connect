@@ -213,7 +213,7 @@ type EmailRequestParameters struct {
 }
 
 type CreateNewAccountParameters struct {
-	AccessPublicKey string `json:"AccessPublicKey"`
+	AccessPublicKey string `json:"accessPublicKey"`
 	Email           string `json:"email"`
 	ReferrerAlias   string `json:"referrerAlias"`
 }
