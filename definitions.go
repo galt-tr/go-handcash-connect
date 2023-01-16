@@ -134,7 +134,7 @@ type PaymentRequestV2 struct {
 
 type VerifyCodeRequest struct {
 	RequestId        string `json:"requestId"`
-	VerificationCode string `json:"VerificationCode"`
+	VerificationCode string `json:"verificationCode"`
 	PublicKey        string `json:"publicKey"`
 }
 
