@@ -37,7 +37,7 @@ var (
 		EnvironmentProduction: {
 			APIURL:      "https://cloud.handcash.io",
 			ClientURL:   "https://app.handcash.io",
-			TrustURL:    "https;//trust.hastearcade.com",
+			TrustURL:    "https://trust.hastearcade.com",
 			Environment: EnvironmentProduction,
 		},
 	}
